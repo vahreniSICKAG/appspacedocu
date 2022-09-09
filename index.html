@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.17">
+<title>UI-Builder: Application specific UI - a step by step example</title>
+<style>
+
+</style>
+</head>
+<body class="article">
+<div id="header">
+<h1>UI-Builder: Application specific UI - a step by step example</h1>
+</div>
+<div id="content">
+<h1 id="_introduction" class="sect0">Introduction</h1>
+<div class="paragraph">
+<p>In this turorial you will learn how to use the UI-Builder to craete customized UI pages for your sensor application. To do this, we will show you how to create an UI for a given app (<em>TrainingApp1</em>, download available in paragraph "Preparation").
+Additional information and explanations can be found in the following tutorials:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://supportportal.sick.com/tutorial/ui-builder2-application-specific-ui/">UI-Builder: Application specific UI</a></p>
+</li>
+<li>
+<p><a href="https://supportportal.sick.com/tutorial/ui-builder2-layouting/">UI-Builder: Layouting</a></p>
+</li>
+<li>
+<p><a href="https://supportportal.sick.com/tutorial/ui-builder2-bindings/">UI-Builder: UI Bindings</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The provided app <em>TrainingApp1</em> receives images of barcodes, decodes them and returns their content. It includes functions to set the cycle time in which new images are received or to take snapshots immediately.</p>
+</div>
+<div class="sect1">
+<h2 id="_prerequisites">Prerequisites</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Basic skills in SICK AppStudio, mainly how to connect to a device or emulator, deploy apps onto it and open the device page. Consider  <a href="https://supportportal.sick.com/tutorial/appstudio-introduction/">AppStudio introduction</a> or <a href="https://supportportal.sick.com/tutorial/appstudio-essentials/">AppStudio essentials</a> for more information.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<h1 id="_goal" class="sect0">Goal:</h1>
+<div class="paragraph">
+<p>Create a UI which will show the received images, show their content and bind to the other functions to make them easily accessible for the user.</p>
+</div>
+<div class="paragraph">
+<p>Screenshot of the finished UI:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="media/pageviewallcontrols.png" alt="pageviewallcontrols">
+</div>
+</div>
+<h1 id="_preparation" class="sect0">Preparation</h1>
+<div class="ulist">
+<ul>
+<li>
+<p>Download the training app:
+<a href="https://supportportal.sick.com/file/0483c6f0-0989-4ee0-9562-19e40f3f06ed/">TrainingApp1.zip</a></p>
+</li>
+<li>
+<p>Open AppStudio, start the Emulator and connect to it.</p>
+</li>
+<li>
+<p>Import the downloaded app. (There are three possibilities to do this: use drag &amp; drop, click "App" → "Import" or right click into some empty space in your working directory and choose "Import App")</p>
+</li>
+<li>
+<p>If you are interested in the code itself, you can open the source code in scripts/App1.lua.</p>
+</li>
+</ul>
+</div>
+<h1 id="_creating_the_ui_step_by_step" class="sect0">Creating the UI step by step</h1>
+<div class="sect1">
+<h2 id="_add_a_new_page">Add a new page</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>First, add a new page component to the App:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Right-click onto the app → "Create component" → "pages"</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="media/newpagecomponent.png" alt="newpagecomponent">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A dialog appears where you can enter a name for the new page. Name the page <em>TrainingUI</em> and press OK.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="media/newpagename.png" alt="newpagename">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The UI-Builder opens automatically.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="media/uibuilder2.png" alt="uibuilder">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_add_main_layout">Add main layout</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now, create a 3-column layout for the page and adjust the widths:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Select <em>ColumnLayout</em> from the "Elements" Area and drag it into <em>RowLayout1</em></p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="media/columns-new.png" alt="columns new">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Repeat this step three times</p>
+</li>
+<li>
+<p>Select <em>ColumnLayout1</em> and set flex-grow to 2, set flex-grow to 1 for <em>ColumnLayout2</em> and <em>ColumnLayout3</em>.<br>
+This will lead to a 2:1:1 ratio between the columns, which means that column 1 takes 50% of the available space and columns 2 and 3 take 25% each.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="media/columnlayoutproperties_both.png" alt="columnlayoutproperties both">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_define_headings">Define Headings</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The next step is to add headings to the columns. Search for <em>Heading4</em> in the "Elements" section and drag one display into each column layout.</p>
+</div>
+<div class="paragraph">
+<p>Set the data-content of</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>the first heading to <em>Visualization</em></p>
+</li>
+<li>
+<p>the second heading to <em>Control</em></p>
+</li>
+<li>
+<p>the third heading to <em>Result</em></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_add_the_viewer">Add the viewer</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>After the layouting is done, you are ready to fill the columns with content.</p>
+</div>
+<div class="paragraph">
+<p>Search for <em>Viewer2D</em> and drag it into the first column. Set the "height" property (last element in the "Properties" tab on the right) of the <em>Viewer2D</em> element to <em>700px</em>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="media/viewer.png" alt="viewer">
+</div>
+</div>
+<div class="paragraph">
+<p>If you run the App now, you see that the visualization control shows images of barcodes.</p>
+</div>
+<div class="paragraph">
+<p><em>Sidenote: If you look into the lua code, you see that we created a viewer there and added every new image to it. This viewer automatically connects to the viewer from the UI via a default-id:</em></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>local viewer = View.create()
+
+...
+
+-- Function is called everytime a new image is provided
+--@handleOnNewImage(image:Image,sensorData:SensorData)
+local function handleOnNewImage(image, sensorData)
+  Log.info("New image received")
+
+  -- Adding image to viewer and update
+  View.addImage(viewer, image)
+  View.present(viewer)
+
+  -- Variable to store content string
+  local content = "[No code found]"
+
+...</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_add_numeric_field_to_configure_the_cycle_time">Add numeric field to configure the cycle time</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you want to change the cycle time in which new pictures are taken, the code offers a function to do that. Connect the UI to this function:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Insert a <em>Heading5</em> to the second <em>ColumnLayout</em> and set its <em>value</em> property to "cycle time".</p>
+</li>
+<li>
+<p>Insert a numeric field into <em>ColumnLayout2</em></p>
+</li>
+<li>
+<p>Set the</p>
+<div class="ulist">
+<ul>
+<li>
+<p><em>min</em> property to 20</p>
+</li>
+<li>
+<p><em>max</em> property to 10000</p>
+</li>
+<li>
+<p><em>unit</em> property to ms</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Click onto the binding symbol on <em>NumericField1</em> or switch to the "Bindings" tab and then click "+ Add" to add a new binding</p>
+</li>
+<li>
+<p>In the binding dialog:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Select "change event" as Control property / event</p>
+</li>
+<li>
+<p>Select "Training/setCycleTime", then click "Insert Binding" to insert the binding</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="media/cycletime.png" alt="cycle_time display">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="media/numericfield.png" alt="numeric1_4" width="800">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="media/numericfield-binding.png" alt="numeric5_8" width="800">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_show_the_current_cycle_time">Show the current cycle time</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Until now, the numeric field will always show the default value (which is the min value) on reload. To show the current cycle time instead, add another binding which sets the value to the current cycle time:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Select the <em>NumbericField</em> and open the binding dialog.</p>
+</li>
+<li>
+<p>In the binding dialog:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Select Control property "value"</p>
+</li>
+<li>
+<p>Select the binding type "Function (Crown)" (you may need to disable the <em>filter by type</em> checkbox)</p>
+</li>
+<li>
+<p>Make sure that "Training/getCycleTime" is selected</p>
+</li>
+<li>
+<p>Click "Insert Binding"</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="media/BindingCycleTime.png" alt="BindingCycleTime">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_add_value_display_to_show_result_of_barcode_scan">Add value display to show result of barcode scan</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>It would be nice to see not only see the barcodes, but also their content. Add a <em>ValueDisplay</em> to show the content:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add a <em>ValueDisplay</em> to column 3 and open the binding dialog.</p>
+</li>
+<li>
+<p>In the binding dialog:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Select property "value" and binding type "Event (CrownEDPWS)""</p>
+</li>
+<li>
+<p>Make sure that "Training/OnProcessingFinished" is selected</p>
+</li>
+<li>
+<p>Click "Insert Binding"</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="media/BindingQR.png" alt="BindingQR">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_add_button_to_take_snapshots">Add button to take snapshots</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Add a button to be able to take snapshots:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add a button to the second column</p>
+</li>
+<li>
+<p>Change data-content to "take snapshot"</p>
+</li>
+<li>
+<p>Open the binding dialog, choose property "submit" and bind it to "Training/takeSnapshot"</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="media/bindingButton.png" alt="bindingButton">
+</div>
+</div>
+</div>
+</div>
+<h1 id="_resulting_app" class="sect0">Resulting App</h1>
+<div class="paragraph">
+<p>The final app can be downloaded here:</p>
+</div>
+<div class="paragraph">
+<p><a href="https://supportportal.sick.com/file/910ba0d5-9c74-4119-9423-e15f69de3b8d/">TrainingAppComplete.zip</a></p>
+</div>
+<h1 id="_download_tutorial_as_pdf" class="sect0">Download Tutorial as PDF</h1>
+
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2022-09-09 08:56:33 UTC
+</div>
+</div>
+</body>
+</html>
